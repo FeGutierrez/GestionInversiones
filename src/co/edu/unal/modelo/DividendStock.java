@@ -38,6 +38,6 @@ public class DividendStock extends Stock{
     
     @Override
     public String informacion(){
-        return this.getSymbol();
+        return super.informacion() + "Dividends: " + this.dividends;
     }
 }

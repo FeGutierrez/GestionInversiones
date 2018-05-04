@@ -18,10 +18,12 @@ public class Cliente {
     private String telefono;
     private int edad;
     private String email;
+    private int cedula;
     
     private ArrayList<Asset> activos;
 
-    public Cliente(String nombre, String apellido, String telefono, int edad, String email) {
+    public Cliente(int cedula, String nombre, String apellido, String telefono, int edad, String email) {
+        this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
@@ -30,6 +32,14 @@ public class Cliente {
         this.activos = new ArrayList<>();
     }
 
+    public int getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(int cedula) {
+        this.cedula = cedula;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -78,28 +88,38 @@ public class Cliente {
         this.activos = activos;
     }
     
+    @Override
+    public String toString(){
+        return  "Cedula: "+this.cedula + " Nombre: " +this.nombre + " Apellido: " + this.apellido + " Edad: " + this.edad;
+    }
+    
     public String infoActivos(){
-        String str = "";
-        int j= 0;
+        String str = "Activos:\n";
         for (int i = 0; i < this.activos.size(); i++) {
             Asset var = this.activos.get(i);
             str += i + " ";
-            if (var instanceof Stock) {
-                str += ((Stock) var).informacion() +"\n";
-            }
-            if (var instanceof MutualFund) {
-                str += ((MutualFund) var).informacion() +"\n";
-            }
             if (var instanceof DividendStock) {
-                //str += "0";
-                //str += ((DividendStock) var).informacion() +"\n";
+                str += ((DividendStock) var).informacion() +"\n";
+            } else {
+                if (var instanceof Stock) {
+                str += "Stock: "+((Stock) var).informacion() +"\n";
+                }
+            }            
+            if (var instanceof MutualFund) {
+                str += "Mutual Fund: " + ((MutualFund) var).informacion() +"\n";
             }
             if (var instanceof Cash) {
-                str += ((Cash) var).informacion() +"\n";
+                str += "Cash: " + ((Cash) var).informacion() +"\n";
             }
-           
+//            if (var instanceof DividendStock) {
+//                //Tengo una duda, cuando no coloco el DividendStock en un if(){}else{} previo al Stock el toma los objetos de tipo
+//                  DividendStock como objetos de tipo Stock, tengo entendido que la superclase puede apuntar a sus descendientes
+                    //Pero en "var instanceof DividendStock" estoy haciendo explicito que debe ser un objeto de esa clase y no de Stock
+                    //Porque hace esa categorización. Está corregido, pero si hace falta replicar el error vuelvo a escribir lo que borré profe.
+                    // ¡Gracias!
+//                //str += ((DividendStock) var).informacion() +"\n";
+//            }
         }
-        
         return str + "\n";
     }
     
@@ -110,12 +130,22 @@ public class Cliente {
             } else{
                 return false;
             }
+    } 
+    
+    public double valorMercadoCliente(){
+        double sum = 0;
+        for (int i = 0; i < this.activos.size(); i++) {
+            sum += this.activos.get(i).getMarketValue();
+        }
+        return sum;
     }
     
-    
-    
-    
-    
-    
-    
+    public double beneficioCliente(){
+        double sum = 0;
+        for (int i = 0; i < this.activos.size(); i++) {
+            sum += this.activos.get(i).getProfit();
+        }
+        return sum;
+        
+    }
 }
