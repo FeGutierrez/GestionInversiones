@@ -16,8 +16,8 @@ import java.util.Scanner;
 public class Main {
     
     /* NOTAS
-    Línea 94 en Cliente.java
-    
+    Línea 114 en Cliente.java
+    Linea 88 en Compania.java
     
     */
     
